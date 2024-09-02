@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circle Art</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      h1 {
+        color: #333;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .control-group {
+        margin: 10px 0;
+      }
+      label {
+        margin-right: 10px;
+      }
+      input[type="range"] {
+        width: 300px;
+      }
+      canvas {
+        border: 1px solid black;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Circle Art</h1>
+    <div class="controls">
+      <div class="control-group">
+        <label for="points">Number of Points:</label>
+        <input type="range" id="points" min="3" max="200" value="72" />
+        <span id="pointsValue">72</span>
+      </div>
+      <div class="control-group">
+        <label for="multiplier">Multiplication Factor (kx):</label>
+        <input
+          type="range"
+          id="multiplier"
+          min="2"
+          max="10"
+          step="1"
+          value="2"
+        />
+        <span id="multiplierValue">2</span>
+      </div>
+    </div>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script src="sirkelkunst.js"></script>
+  </body>
+</html>

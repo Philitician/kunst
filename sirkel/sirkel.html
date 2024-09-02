@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circle and Ellipse Drawing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      h1 {
+        color: #333;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .control-group {
+        margin: 10px 0;
+      }
+      label {
+        margin-right: 10px;
+      }
+      input[type="range"] {
+        width: 300px;
+      }
+      canvas {
+        border: 1px solid black;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Circle and Ellipse Drawing</h1>
+    <div class="controls">
+      <div class="control-group">
+        <label for="points">Number of Points:</label>
+        <input type="range" id="points" min="3" max="100" value="50" />
+        <span id="pointsValue">50</span>
+      </div>
+      <div class="control-group">
+        <label for="scaling">Scaling Factor (x to kx):</label>
+        <input
+          type="range"
+          id="scaling"
+          min="0.1"
+          max="3"
+          step="0.1"
+          value="1"
+        />
+        <span id="scalingValue">1</span>
+      </div>
+    </div>
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script src="sirkel.js"></script>
+  </body>
+</html>
