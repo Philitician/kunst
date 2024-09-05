@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circle Art</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+        background-color: white;
+        color: black;
+      }
+      h1 {
+        color: black;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .control-group {
+        margin: 10px 0;
+      }
+      label {
+        margin-right: 10px;
+      }
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Circle Art</h1>
+    <div class="controls">
+      <div class="control-group">
+        <label for="points">Number of Points:</label>
+        <select id="points">
+          <option value="16">16</option>
+          <option value="32">32</option>
+          <option value="64" selected>64</option>
+          <option value="128">128</option>
+          <option value="256">256</option>
+          <option value="512">512</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="multiplier">Size Factor:</label>
+        <select id="multiplier">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+    </div>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const pointsSelect = document.getElementById("points");
+        const multiplierSelect = document.getElementById("multiplier");
+
+        function drawPattern(points, multiplier) {
+          const radius = canvas.width / 2 - 20; // Increased radius
+          const centerX = canvas.width / 2;
+          const centerY = canvas.height / 2;
+          const step = (2 * Math.PI) / points;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Draw the outer circle
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+          ctx.lineWidth = 2; // Increased line width
+          ctx.stroke();
+
+          // Draw the pattern
+          ctx.beginPath();
+          ctx.strokeStyle = "black";
+          ctx.lineWidth = 1.5; // Slightly increased line width for the pattern
+
+          const coordinates = [];
+          for (let i = 0; i < points; i++) {
+            const angle = i * step;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            coordinates.push({ x, y });
+          }
+
+          for (let i = 0; i < points; i++) {
+            const start = coordinates[i];
+            const end = coordinates[(i * multiplier) % points];
+            ctx.moveTo(start.x, start.y);
+            ctx.lineTo(end.x, end.y);
+          }
+
+          ctx.stroke();
+        }
+
+        function update() {
+          const points = parseInt(pointsSelect.value, 10);
+          const multiplier = parseFloat(multiplierSelect.value);
+          console.log(`Points: ${points}, Multiplier: ${multiplier}`);
+          drawPattern(points, multiplier);
+        }
+
+        pointsSelect.addEventListener("change", update);
+        multiplierSelect.addEventListener("change", update);
+
+        // Initial draw
+        update();
+      });
+    </script>
+  </body>
+</html>

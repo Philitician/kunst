@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circle and Ellipse Drawing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      h1 {
+        color: #333;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .control-group {
+        margin: 10px 0;
+      }
+      label {
+        margin-right: 10px;
+      }
+      input[type="range"] {
+        width: 300px;
+      }
+      canvas {
+        border: 1px solid black;
+        background-color: white;
+        width: 800px;
+        height: 800px;
+      }
+      select {
+        padding: 5px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Circle and Ellipse Drawing</h1>
+    <div class="controls">
+      <div class="control-group">
+        <label for="points">Number of Points:</label>
+        <select id="points">
+          <option value="16">16</option>
+          <option value="32">32</option>
+          <option value="64">64</option>
+          <option value="128">128</option>
+          <option value="256">256</option>
+          <option value="512">512</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="scaling">Scaling Factor (x to kx):</label>
+        <select id="scaling">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+    </div>
+    <canvas id="canvas" width="800" height="800"></canvas>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const pointsSelect = document.getElementById("points");
+        const scalingSelect = document.getElementById("scaling");
+
+        function drawShape(points, scaling) {
+          const a = 380; // semi-major axis (increased)
+          const b = 380; // semi-minor axis (increased)
+          const centerX = canvas.width / 2;
+          const centerY = canvas.height / 2;
+          const step = (2 * Math.PI) / points;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.beginPath();
+
+          for (let i = 0; i <= points; i++) {
+            const v = i * step;
+            const x = centerX + a * Math.cos(v) * scaling;
+            const y = centerY + b * Math.sin(v);
+            if (i === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+
+          ctx.closePath();
+          ctx.stroke();
+        }
+
+        function update() {
+          const points = parseInt(pointsSelect.value, 10);
+          const scaling = parseFloat(scalingSelect.value);
+          drawShape(points, scaling);
+        }
+
+        pointsSelect.addEventListener("change", update);
+        scalingSelect.addEventListener("change", update);
+
+        // Initial draw
+        update();
+      });
+    </script>
+  </body>
+</html>
