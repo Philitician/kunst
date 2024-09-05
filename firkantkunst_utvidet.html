@@ -43,31 +43,15 @@
     <div class="controls">
       <div class="control-group">
         <label for="numSquares">Number of Squares:</label>
-        <input type="range" id="numSquares" min="1" max="50" value="20" />
-        <span id="numSquaresValue">20</span>
+        <input type="range" id="numSquares" min="1" max="50" value="30" />
+        <span id="numSquaresValue">30</span>
       </div>
       <div class="control-group">
         <label for="angle">Rotation Angle (degrees):</label>
-        <input type="range" id="angle" min="0" max="45" value="10" />
-        <span id="angleValue">10</span>
+        <input type="range" id="angle" min="0" max="6" value="5" />
+        <span id="angleValue">5</span>
       </div>
-      <div class="control-group">
-        <label for="sizeReduction">Size Reduction Factor:</label>
-        <input
-          type="range"
-          id="sizeReduction"
-          min="0.5"
-          max="0.99"
-          step="0.01"
-          value="0.9"
-        />
-        <span id="sizeReductionValue">0.9</span>
-      </div>
-      <div class="control-group">
-        <label for="color">Square Color:</label>
-        <input type="color" id="color" value="#000000" />
-        <span id="colorValue">#000000</span>
-      </div>
+      <!-- TODO: Add controls for grid dimensions (rows and columns) -->
     </div>
     <canvas id="canvas" width="600" height="600"></canvas>
     <script>
@@ -76,47 +60,39 @@
         const ctx = canvas.getContext("2d");
         const numSquaresInput = document.getElementById("numSquares");
         const angleInput = document.getElementById("angle");
-        const sizeReductionInput = document.getElementById("sizeReduction");
         const numSquaresValue = document.getElementById("numSquaresValue");
         const angleValue = document.getElementById("angleValue");
-        const sizeReductionValue =
-          document.getElementById("sizeReductionValue");
-        const colorInput = document.getElementById("color");
-        const colorValue = document.getElementById("colorValue");
+        // Removed colorInput and colorValue variables
 
-        function drawSquare(x, y, size, rotation, color) {
+        // Function to draw a single square
+        function drawSquare(x, y, size, rotation) {
           ctx.save();
           ctx.translate(x, y);
           ctx.rotate((rotation * Math.PI) / 180);
           ctx.beginPath();
           ctx.rect(-size / 2, -size / 2, size, size);
-          ctx.strokeStyle = color;
+          ctx.strokeStyle = "#000000"; // Black color for all squares
           ctx.stroke();
           ctx.restore();
         }
 
-        function drawNestedSquares(
-          x,
-          y,
-          numSquares,
-          angle,
-          sizeReduction,
-          color,
-          mirror
-        ) {
-          let size = canvas.width / 4; // Adjust size based on grid
+        // Function to draw nested squares for a single cell in the grid
+        function drawNestedSquares(x, y, numSquares, angle, mirror) {
+          let size = canvas.width / 4; // Initial size based on grid cell
           let rotation = 0;
+          const sizeReduction = 0.92; // Factor to reduce size for each nested square
 
           for (let i = 0; i < numSquares; i++) {
-            drawSquare(x, y, size, rotation, color);
+            drawSquare(x, y, size, rotation);
             size *= sizeReduction;
-            rotation += mirror ? -angle : angle;
+            rotation += mirror ? -angle : angle; // Alternate rotation direction
           }
         }
 
-        function drawGrid(numSquares, angle, sizeReduction, color) {
-          const numRows = 4;
-          const numCols = 4;
+        // Function to draw the entire grid of nested squares
+        function drawGrid(numSquares, angle) {
+          const numRows = 4; // Fixed number of rows in the grid
+          const numCols = 4; // Fixed number of columns in the grid
           const cellWidth = canvas.width / numCols;
           const cellHeight = canvas.height / numRows;
 
@@ -126,36 +102,25 @@
             for (let col = 0; col < numCols; col++) {
               const centerX = col * cellWidth + cellWidth / 2;
               const centerY = row * cellHeight + cellHeight / 2;
-              const mirror = (row + col) % 2 === 1; // Mirror every other square
-              drawNestedSquares(
-                centerX,
-                centerY,
-                numSquares,
-                angle,
-                sizeReduction,
-                color,
-                mirror
-              );
+              const mirror = (row + col) % 2 === 1; // Alternate mirroring for visual effect
+              drawNestedSquares(centerX, centerY, numSquares, angle, mirror);
             }
           }
         }
 
+        // Function to update the canvas based on user input
         function update() {
           const numSquares = parseInt(numSquaresInput.value, 10);
           const angle = parseFloat(angleInput.value);
-          const sizeReduction = parseFloat(sizeReductionInput.value);
-          const color = colorInput.value;
           numSquaresValue.textContent = numSquares;
           angleValue.textContent = angle;
-          sizeReductionValue.textContent = sizeReduction;
-          colorValue.textContent = color;
-          drawGrid(numSquares, angle, sizeReduction, color);
+          drawGrid(numSquares, angle);
         }
 
+        // Event listeners for user input
         numSquaresInput.addEventListener("input", update);
         angleInput.addEventListener("input", update);
-        sizeReductionInput.addEventListener("input", update);
-        colorInput.addEventListener("input", update);
+        // Removed colorInput event listener
 
         // Initial draw
         update();

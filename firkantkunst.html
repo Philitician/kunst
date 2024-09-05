@@ -43,40 +43,33 @@
     <div class="controls">
       <div class="control-group">
         <label for="numSquares">Number of Squares:</label>
-        <input type="range" id="numSquares" min="1" max="50" value="20" />
+        <input type="range" id="numSquares" min="1" max="50" value="30" />
         <span id="numSquaresValue">20</span>
       </div>
       <div class="control-group">
         <label for="angle">Rotation Angle (degrees):</label>
-        <input type="range" id="angle" min="0" max="45" value="10" />
-        <span id="angleValue">10</span>
+        <input type="range" id="angle" min="0" max="5" value="5" />
+        <span id="angleValue">5</span>
       </div>
-      <div class="control-group">
-        <label for="sizeReduction">Size Reduction Factor:</label>
-        <input
-          type="range"
-          id="sizeReduction"
-          min="0.5"
-          max="0.99"
-          step="0.01"
-          value="0.9"
-        />
-        <span id="sizeReductionValue">0.9</span>
-      </div>
+      <!-- Removed size reduction control group -->
     </div>
     <canvas id="canvas" width="600" height="600"></canvas>
     <script>
       window.onload = function () {
+        // Get canvas and context
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
+
+        // Get input elements and value display spans
         const numSquaresInput = document.getElementById("numSquares");
         const angleInput = document.getElementById("angle");
-        const sizeReductionInput = document.getElementById("sizeReduction");
         const numSquaresValue = document.getElementById("numSquaresValue");
         const angleValue = document.getElementById("angleValue");
-        const sizeReductionValue =
-          document.getElementById("sizeReductionValue");
 
+        // Hardcoded size reduction factor
+        const sizeReduction = 0.92;
+
+        // Function to draw a single square
         function drawSquare(x, y, size, rotation) {
           ctx.save();
           ctx.translate(x, y);
@@ -87,34 +80,36 @@
           ctx.restore();
         }
 
-        function drawNestedSquares(numSquares, angle, sizeReduction) {
+        // Function to draw nested squares
+        function drawNestedSquares(numSquares, angle) {
           const centerX = canvas.width / 2;
           const centerY = canvas.height / 2;
           let size = canvas.width * 0.8; // Initial size of the largest square
           let rotation = 0;
 
+          // Clear canvas before drawing
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+          // Loop to draw multiple squares
           for (let i = 0; i < numSquares; i++) {
             drawSquare(centerX, centerY, size, rotation);
-            size *= sizeReduction;
-            rotation += angle;
+            size *= sizeReduction; // Decrease size for next square
+            rotation -= angle; // Rotate for next square
           }
         }
 
+        // Function to update the pattern based on user input
         function update() {
           const numSquares = parseInt(numSquaresInput.value, 10);
           const angle = parseFloat(angleInput.value);
-          const sizeReduction = parseFloat(sizeReductionInput.value);
           numSquaresValue.textContent = numSquares;
           angleValue.textContent = angle;
-          sizeReductionValue.textContent = sizeReduction;
-          drawNestedSquares(numSquares, angle, sizeReduction);
+          drawNestedSquares(numSquares, angle);
         }
 
+        // Add event listeners for user input
         numSquaresInput.addEventListener("input", update);
         angleInput.addEventListener("input", update);
-        sizeReductionInput.addEventListener("input", update);
 
         // Initial draw
         update();
