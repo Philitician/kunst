@@ -1,6 +1,4 @@
-### Task Description: Nested Squares
-
-#### Task: Generate Nested Squares
+#### Task 3a: Generate Nested Squares
 
 Create a program that generates a pattern of nested squares, where each square is rotated slightly inside the previous one, forming a spiral-like effect. The goal is to reproduce the figure shown in the image, which is composed of squares that gradually rotate and shrink as they nest inside each other.
 

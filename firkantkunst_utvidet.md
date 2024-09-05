@@ -1,6 +1,4 @@
-### Task Description: Extended Nested Squares Pattern
-
-#### Extended Task: Generate a Grid of Nested Squares Patterns
+#### Task 3b: Generate a Grid of Nested Squares Patterns
 
 Expand the existing program that generates nested squares to create a grid of these patterns. The goal is to replicate the design shown in the latest image, where multiple instances of the nested squares pattern are arranged in a grid format.
 
